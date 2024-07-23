@@ -1,0 +1,74 @@
+﻿@model Motorcycle.Models.Fichatecnica
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Fichatecnica</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdFichaTecnica" />
+            <div class="form-group">
+                <label asp-for="FechaRegistroFichaTecnica" class="control-label"></label>
+                <input asp-for="FechaRegistroFichaTecnica" class="form-control" />
+                <span asp-validation-for="FechaRegistroFichaTecnica" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumeroMotorFichaTecnica" class="control-label"></label>
+                <input asp-for="NumeroMotorFichaTecnica" class="form-control" />
+                <span asp-validation-for="NumeroMotorFichaTecnica" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CilindrajeFichaTecnica" class="control-label"></label>
+                <input asp-for="CilindrajeFichaTecnica" class="form-control" />
+                <span asp-validation-for="CilindrajeFichaTecnica" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PlacaFichaTecnica" class="control-label"></label>
+                <input asp-for="PlacaFichaTecnica" class="form-control" />
+                <span asp-validation-for="PlacaFichaTecnica" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MarcaFichaTecnica" class="control-label"></label>
+                <input asp-for="MarcaFichaTecnica" class="form-control" />
+                <span asp-validation-for="MarcaFichaTecnica" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ChacisFichaTecnica" class="control-label"></label>
+                <input asp-for="ChacisFichaTecnica" class="form-control" />
+                <span asp-validation-for="ChacisFichaTecnica" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ModeloFichaTecnica" class="control-label"></label>
+                <input asp-for="ModeloFichaTecnica" class="form-control" />
+                <span asp-validation-for="ModeloFichaTecnica" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdCliente" class="control-label">Nombre Cliente</label>
+                <select asp-for="IdCliente" class="form-control" asp-items="ViewBag.IdCliente"></select>
+                <span asp-validation-for="IdCliente" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdUsuario" class="control-label">Nombre Usuario</label>
+                <select asp-for="IdUsuario" class="form-control" asp-items="ViewBag.IdUsuario"></select>
+                <span asp-validation-for="IdUsuario" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

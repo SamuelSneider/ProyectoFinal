@@ -1,0 +1,55 @@
+﻿@model Motorcycle.Models.Citum
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Citum</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FechaCita" class="control-label"></label>
+                <input asp-for="FechaCita" class="form-control" />
+                <span asp-validation-for="FechaCita" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HoraCita" class="control-label"></label>
+                <input asp-for="HoraCita" class="form-control" />
+                <span asp-validation-for="HoraCita" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FechaFinalizacionCita" class="control-label"></label>
+                <input asp-for="FechaFinalizacionCita" class="form-control" />
+                <span asp-validation-for="FechaFinalizacionCita" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdFichaTecnica" class="control-label"></label>
+                <select asp-for="IdFichaTecnica" class ="form-control" asp-items="ViewBag.IdFichaTecnica"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdCliente" class="control-label">Nombre Cliente</label>
+                <select asp-for="IdCliente" class ="form-control" asp-items="ViewBag.IdCliente"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdUsuario" class="control-label">Nombre Usuario</label>
+                <select asp-for="IdUsuario" class ="form-control" asp-items="ViewBag.IdUsuario"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Motorcycle.Models.Producto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CodigoProducto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NombreProducto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DescripcionProducto)
+            </th>
+            <th width="200px">
+                @Html.DisplayNameFor(model => model.FotoProducto)
+
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValorUnitarioProducto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdUsuarioNavigation.NombreUsuario)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CodigoProducto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NombreProducto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescripcionProducto)
+                </td>
+                <td width="208px">
+                    @if (item.FotoProducto != null && item.FotoProducto.Length > 0)
+                    {
+                        var imageBase64 = Convert.ToBase64String(item.FotoProducto);
+                        var imageUrl = $"data:image;base64,{imageBase64}";
+                        <img src="@imageUrl" alt="Product Image" style="max-width: 200px; max-height: 200px;" />
+                    }
+                    else
+                    {
+                        <text>No Image</text>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ValorUnitarioProducto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdUsuarioNavigation.NombreUsuario)
+                </td>
+                <td>
+                    <a asp-action="Edit" class="btn btn-warning" asp-route-id="@item.IdProducto">Edit</a> |
+                    <a asp-action="Details" class="btn btn-primary" asp-route-id="@item.IdProducto">Details</a> |
+                    <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.IdProducto">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Motorcycle.Models.Fichatecnica>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaRegistroFichaTecnica)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumeroMotorFichaTecnica)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CilindrajeFichaTecnica)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlacaFichaTecnica)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MarcaFichaTecnica)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ChacisFichaTecnica)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModeloFichaTecnica)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdClienteNavigation.NombreCliente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdUsuarioNavigation.NombreUsuario)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaRegistroFichaTecnica)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroMotorFichaTecnica)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CilindrajeFichaTecnica)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlacaFichaTecnica)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MarcaFichaTecnica)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ChacisFichaTecnica)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModeloFichaTecnica)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdClienteNavigation.NombreCliente)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdUsuarioNavigation.NombreUsuario)
+            </td>
+            <td>
+                    <a asp-action="Edit" class="btn btn-warning" asp-route-id="@item.IdFichaTecnica">Edit</a> |
+                    <a asp-action="Details" class="btn btn-primary" asp-route-id="@item.IdFichaTecnica">Details</a> |
+                    <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.IdFichaTecnica">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,36 @@
+﻿@model Motorcycle.Models.ServicioHasOrdentrabajo
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>ServicioHasOrdentrabajo</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PrecioServicioHasOrdenTrabajo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PrecioServicioHasOrdenTrabajo)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdOrdenTrabajoNavigation.IdOrdenTrabajo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdOrdenTrabajoNavigation.IdOrdenTrabajo)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdServicioNavigation.NombreServicio)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdServicioNavigation.NombreServicio)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.IdServicioOrdenTrabajo">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
