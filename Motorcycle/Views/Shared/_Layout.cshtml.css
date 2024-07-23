@@ -81,6 +81,15 @@ button.accept-policy {
         background-color: darkred; 
     }
 
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15.5px;
+    margin-left: -15.5px;
+}
+
 
 
 

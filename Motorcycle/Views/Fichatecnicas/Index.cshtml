@@ -1,83 +1,81 @@
 ﻿@model IEnumerable<Motorcycle.Models.Fichatecnica>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Listado de Fichas Técnicas";
 }
 
-<h1>Index</h1>
+<div class="container mt-4">
+    <!-- Contenedor unificado para título, formulario de búsqueda y tabla -->
+    <div class="unified-container border rounded shadow-sm">
+        <!-- Contenedor para título y botón -->
+        <div class="title-container border rounded p-3 mbb-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="mb-0">Listado de Fichas Técnicas</h1>
+                <a asp-action="Create" class="btn btn-primary btn-sm">
+                    <i class="fa fa-plus"></i> Nuevo Registro
+                </a>
+            </div>
+        </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaRegistroFichaTecnica)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NumeroMotorFichaTecnica)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CilindrajeFichaTecnica)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PlacaFichaTecnica)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MarcaFichaTecnica)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ChacisFichaTecnica)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModeloFichaTecnica)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdClienteNavigation.NombreCliente)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdUsuarioNavigation.NombreUsuario)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaRegistroFichaTecnica)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumeroMotorFichaTecnica)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CilindrajeFichaTecnica)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PlacaFichaTecnica)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MarcaFichaTecnica)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ChacisFichaTecnica)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModeloFichaTecnica)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdClienteNavigation.NombreCliente)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdUsuarioNavigation.NombreUsuario)
-            </td>
-            <td>
-                    <a asp-action="Edit" class="btn btn-warning" asp-route-id="@item.IdFichaTecnica">Edit</a> |
-                    <a asp-action="Details" class="btn btn-primary" asp-route-id="@item.IdFichaTecnica">Details</a> |
-                    <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.IdFichaTecnica">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        <!-- Contenedor para el formulario de búsqueda -->
+        <div class="search-container borderr rounded p-3 mbb-3">
+            @using (Html.BeginForm("Index", "Fichatecnica", FormMethod.Get, new { @class = "form-inline mb-0" }))
+            {
+                <div class="form-group mb-0 d-flex align-items-center">
+                    @Html.TextBox("searchTerm", null, new { @class = "form-control form-control-sm", @placeholder = "Buscar", @style = "width: 300px;" })
+                    <button type="submit" class="btn btn-light btn-sm ml-2 d-flex align-items-center">
+                        <i class="fa fa-search" style="color: gray;"></i>
+                    </button>
+                </div>
+            }
+        </div>
+
+        <!-- Contenedor para la tabla -->
+        <div class="table-responsive border rounded p-3">
+            <table class="table table-striped table-sm mb-0">
+                <thead class="thead-light">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.FechaRegistroFichaTecnica)</th>
+                        <th>@Html.DisplayNameFor(model => model.NumeroMotorFichaTecnica)</th>
+                        <th>@Html.DisplayNameFor(model => model.CilindrajeFichaTecnica)</th>
+                        <th>@Html.DisplayNameFor(model => model.PlacaFichaTecnica)</th>
+                        <th>@Html.DisplayNameFor(model => model.MarcaFichaTecnica)</th>
+                        <th>@Html.DisplayNameFor(model => model.ChacisFichaTecnica)</th>
+                        <th>@Html.DisplayNameFor(model => model.ModeloFichaTecnica)</th>
+                        <th>@Html.DisplayNameFor(model => model.IdClienteNavigation.NombreCliente)</th>
+                        <th>@Html.DisplayNameFor(model => model.IdUsuarioNavigation.NombreUsuario)</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.FechaRegistroFichaTecnica)</td>
+                            <td>@Html.DisplayFor(modelItem => item.NumeroMotorFichaTecnica)</td>
+                            <td>@Html.DisplayFor(modelItem => item.CilindrajeFichaTecnica)</td>
+                            <td>@Html.DisplayFor(modelItem => item.PlacaFichaTecnica)</td>
+                            <td>@Html.DisplayFor(modelItem => item.MarcaFichaTecnica)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ChacisFichaTecnica)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ModeloFichaTecnica)</td>
+                            <td>@Html.DisplayFor(modelItem => item.IdClienteNavigation.NombreCliente)</td>
+                            <td>@Html.DisplayFor(modelItem => item.IdUsuarioNavigation.NombreUsuario)</td>
+                            <td>
+                                <a asp-action="Edit" class="btn btn-warning btn-sm mr-2" asp-route-id="@item.IdFichaTecnica">
+                                    <i class="fa fa-pencil-alt"></i>
+                                </a>
+                                <a asp-action="Details" class="btn btn-primary btn-sm mr-2" asp-route-id="@item.IdFichaTecnica">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a asp-action="Delete" class="btn btn-danger btn-sm" asp-route-id="@item.IdFichaTecnica">
+                                    <i class="fa fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @ViewBag.MensajeBusqueda
+    </div>
+</div>

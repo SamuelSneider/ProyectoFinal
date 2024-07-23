@@ -16,3 +16,135 @@ html {
 body {
   margin-bottom: 60px;
 }
+/* Asegura que la tabla no se desborde del contenedor */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+}
+
+    .table th, .table td {
+        white-space: nowrap;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    /* Mejora la apariencia de los botones dentro de la tabla */
+    .table .btn {
+        margin: 2px;
+    }
+
+/* Asegura que los encabezados de la tabla sean más visibles */
+.thead-dark th {
+    color: #fff;
+    background-color: #343a40;
+    border-color: #454d55;
+}
+.btn-warning {
+    color: #1f2d3d;
+    background-color: #ffc107;
+    border-color: olive;
+    box-shadow: none;
+}
+
+/* wwwroot/css/site.css */
+.btn-warning {
+    background-color: #ff5722; /* Cambia el color de fondo del botón */
+    border-color: #ff5722; /* Cambia el color del borde del botón */
+}
+
+    .btn-warning:hover {
+        background-color: #e64a19; /* Color más oscuro en hover */
+        border-color: #e64a19;
+    }
+.btn-warning i {
+    color: #ffffff; /* Cambia el color del ícono en el botón */
+}
+/* wwwroot/css/site.css */
+.content-block {
+    background-color: #f8f9fa; /* Color de fondo gris muy claro */
+    border-color: #d3d3d3; /* Color del borde gris claro */
+}
+
+.title-bar {
+    background-color: #e9ecef; /* Color de fondo gris muy claro para la barra de título */
+    border-color: #ced4da; /* Color del borde gris más oscuro para la barra de título */
+}
+
+.search-container {
+    background-color: #007bff; /* Azul claro */
+    color: #ffffff; /* Color de texto blanco */
+}
+
+.search-container .form-control {
+    border-radius: 0.25rem; /* Bordes redondeados para el campo de texto */
+}
+
+.search-container .btn-light {
+    background-color: #ffffff; /* Fondo blanco para el botón de búsqueda */
+    color: #6c757d; /* Color gris para el ícono de búsqueda */
+}
+
+.search-container .btn-light i {
+    color: #6c757d; /* Color gris para el ícono de búsqueda */
+}
+
+.border-light {
+    border-color: #d3d3d3 !important; /* Gris claro para el borde */
+}
+
+.border-dark {
+    border-color: #343a40 !important; /* Gris oscuro para el borde */
+}
+
+.shadow-sm {
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075) !important; /* Sombra sutil */
+}
+
+.p-4 {
+    padding: 1.5rem !important; /* Padding dentro del contenedor */
+}
+
+.mt-4 {
+    margin-top: 1.5rem !important; /* Margen superior para separación */
+}
+
+
+
+.mb-0 {
+    margin-bottom: 0 !important; /* Elimina el margen inferior */
+}
+
+.form-inline .form-group {
+    margin-bottom: 0; /* Elimina el margen inferior para alinear los elementos */
+}
+
+.d-flex .align-items-center {
+    align-items: center; /* Alinea verticalmente los elementos */
+}
+
+.table {
+    margin-bottom: 0; /* Elimina el margen inferior de la tabla */
+}
+
+/* Asegura que el botón y el campo de búsqueda estén alineados */
+.form-inline .form-control,
+.form-inline .btn-light {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Estilo para el contenedor unificado */
+
+
+/* Ajustes para el botón de búsqueda */
+.btn-light {
+    color: gray; /* Color gris para el icono de búsqueda */
+}
+
+
