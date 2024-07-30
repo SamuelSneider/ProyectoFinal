@@ -12,6 +12,7 @@ namespace Motorcycle.Controllers
     public class RolController : Controller
     {
         private readonly MotorcycleContext _context;
+        private const int PageSize = 10; // Tamaño de página para la paginación
 
         public RolController(MotorcycleContext context)
         {
@@ -19,12 +20,32 @@ namespace Motorcycle.Controllers
         }
 
         // GET: Rol
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar, int page = 1)
         {
-              return _context.Rols != null ? 
-                          View(await _context.Rols.ToListAsync()) :
-                          Problem("Entity set 'MotorcycleContext.Rols'  is null.");
+            var query = _context.Rols.AsQueryable();
+
+            // Búsqueda
+            if (!string.IsNullOrEmpty(buscar))
+            {
+                query = query.Where(r => r.NombreRol.Contains(buscar));
+            }
+
+            // Paginación
+            int totalItems = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalItems / PageSize);
+            var paginatedItems = await query
+                .OrderBy(r => r.IdRol)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToListAsync();
+
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
+            ViewData["SearchQuery"] = buscar;
+
+            return View(paginatedItems);
         }
+
 
         // GET: Rol/Details/5
         public async Task<IActionResult> Details(int? id)

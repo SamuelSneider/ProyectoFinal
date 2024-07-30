@@ -45,6 +45,12 @@ body {
     background-color: #343a40;
     border-color: #454d55;
 }
+.table .theadd-light {
+    color: #fff;
+    background-color: #000000;
+    border-color: #dee2e6;
+}
+
 .btn-warning {
     color: #1f2d3d;
     background-color: #ffc107;
@@ -77,7 +83,6 @@ body {
 }
 
 .search-container {
-    background-color: #007bff; /* Azul claro */
     color: #ffffff; /* Color de texto blanco */
 }
 
@@ -145,6 +150,35 @@ body {
 /* Ajustes para el botón de búsqueda */
 .btn-light {
     color: gray; /* Color gris para el icono de búsqueda */
+}
+
+.custom-navbar-dark {
+    background-color: #000000 !important; /* Color negro */
+    color: #ffffff !important; /* Color del texto en blanco */
+    border-color: #000000 !important; /* Color del borde en negro si es necesario */
+}
+.btn-custom-warning {
+    background-color: #8ed851 !important; /* Cambia #000000 por el color que desees */
+    color: #ffffff !important; /* Cambia #ffffff por el color del texto que desees */
+    border-color: #8ed851 !important; /* Cambia #000000 por el color del borde que desees */
+}
+.btn-custom-primary {
+    background-color: #2c3e50 !important; /* Cambia #000000 por el color que desees */
+    color: #ffffff !important; /* Cambia #ffffff por el color del texto que desees */
+    border-color: #2c3e50 !important; /* Cambia #000000 por el color del borde que desees */
+}
+
+
+
+.btn-primarys {
+    color: #ffffff !important;
+    ;
+    background-color: #2c3e50 !important;
+    border-color: #2c3e50 !important;
+    box-shadow: none;
+}
+.brand-link .brand-image {
+    background-color: white;
 }
 
 

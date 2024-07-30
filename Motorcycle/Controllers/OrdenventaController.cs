@@ -12,6 +12,7 @@ namespace Motorcycle.Controllers
     public class OrdenventaController : Controller
     {
         private readonly MotorcycleContext _context;
+        private const int PageSize = 10; // Tamaño de página para la paginación
 
         public OrdenventaController(MotorcycleContext context)
         {
@@ -19,10 +20,37 @@ namespace Motorcycle.Controllers
         }
 
         // GET: Ordenventa
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar, int page = 1)
         {
-            var motorcycleContext = _context.Ordenventa.Include(o => o.IdClienteNavigation).Include(o => o.IdEstadoVentaNavigation).Include(o => o.IdUsuarioNavigation);
-            return View(await motorcycleContext.ToListAsync());
+            var query = _context.Ordenventa
+                .Include(o => o.IdClienteNavigation)
+                .Include(o => o.IdEstadoVentaNavigation)
+                .Include(o => o.IdUsuarioNavigation)
+                .AsQueryable();
+
+            // Búsqueda
+            if (!string.IsNullOrEmpty(buscar))
+            {
+                query = query.Where(o =>
+                    o.IdClienteNavigation.NombreCliente.Contains(buscar) ||
+                    o.IdUsuarioNavigation.NombreUsuario.Contains(buscar) ||
+                    o.IdEstadoVentaNavigation.IdEstadoVenta.ToString().Contains(buscar));
+            }
+
+            // Paginación
+            int totalItems = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalItems / PageSize);
+            var paginatedItems = await query
+                .OrderBy(o => o.IdVenta)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToListAsync();
+
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
+            ViewData["SearchQuery"] = buscar;
+
+            return View(paginatedItems);
         }
 
         // GET: Ordenventa/Details/5

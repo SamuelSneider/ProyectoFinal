@@ -12,6 +12,7 @@ namespace Motorcycle.Controllers
     public class CorreousuariosController : Controller
     {
         private readonly MotorcycleContext _context;
+        private const int PageSize = 10; // Tamaño de página
 
         public CorreousuariosController(MotorcycleContext context)
         {
@@ -19,10 +20,33 @@ namespace Motorcycle.Controllers
         }
 
         // GET: Correousuarios
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar, int page = 1)
         {
-            var motorcycleContext = _context.Correousuarios.Include(c => c.IdUsuarioNavigation);
-            return View(await motorcycleContext.ToListAsync());
+            int pageSize = 5; // Tamaño de la página
+            var correousuarios = _context.Correousuarios
+                .Include(c => c.IdUsuarioNavigation)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(buscar))
+            {
+                correousuarios = correousuarios.Where(s =>
+                    s.CorreoUsuario.Contains(buscar) ||
+                    s.IdUsuarioNavigation.NombreUsuario.Contains(buscar));
+            }
+
+            // Paginación
+            int totalItems = await correousuarios.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+            var paginatedCorreousuarios = await correousuarios
+                .OrderBy(c => c.IdCorreoUsuario) // Asegúrate de ordenar para la paginación
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
+
+            return View(paginatedCorreousuarios);
         }
 
         // GET: Correousuarios/Details/5

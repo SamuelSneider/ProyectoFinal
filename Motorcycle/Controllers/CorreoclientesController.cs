@@ -12,6 +12,7 @@ namespace Motorcycle.Controllers
     public class CorreoclientesController : Controller
     {
         private readonly MotorcycleContext _context;
+        private const int PageSize = 10; // Tamaño de página
 
         public CorreoclientesController(MotorcycleContext context)
         {
@@ -19,11 +20,36 @@ namespace Motorcycle.Controllers
         }
 
         // GET: Correoclientes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar, int page = 1)
         {
-            var motorcycleContext = _context.Correoclientes.Include(c => c.IdClienteNavigation);
-            return View(await motorcycleContext.ToListAsync());
+            int pageSize = PageSize; // Tamaño de página
+            var correoclientes = _context.Correoclientes
+                .Include(c => c.IdClienteNavigation)
+                .AsQueryable();
+
+            if (!String.IsNullOrEmpty(buscar))
+            {
+                correoclientes = correoclientes.Where(c =>
+                    c.CorreoCliente.Contains(buscar) || // Usa el nombre de propiedad correcto aquí
+                    c.IdClienteNavigation.NombreCliente.Contains(buscar));
+            }
+
+            // Paginación
+            int totalItems = await correoclientes.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+            var paginatedCorreoclientes = await correoclientes
+                .OrderBy(c => c.IdCorreoCliente) // Ordena por un campo adecuado para la paginación
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
+            ViewData["SearchQuery"] = buscar;
+
+            return View(paginatedCorreoclientes);
         }
+
 
         // GET: Correoclientes/Details/5
         public async Task<IActionResult> Details(int? id)

@@ -14,7 +14,6 @@ namespace Motorcycle.Models
         public decimal? NumeroOrdenTrabajo { get; set; }
         public int IdCita { get; set; }
         public int IdVenta { get; set; }
-
         public virtual Citum IdCitaNavigation { get; set; } = null!;
         public virtual Ordenventum IdVentaNavigation { get; set; } = null!;
         public virtual ICollection<ServicioHasOrdentrabajo> ServicioHasOrdentrabajos { get; set; }

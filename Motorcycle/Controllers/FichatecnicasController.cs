@@ -12,6 +12,8 @@ namespace Motorcycle.Controllers
     public class FichatecnicasController : Controller
     {
         private readonly MotorcycleContext _context;
+        private const int PageSize = 10; // Tamaño de página
+
 
         public FichatecnicasController(MotorcycleContext context)
         {
@@ -19,11 +21,44 @@ namespace Motorcycle.Controllers
         }
 
         // GET: Fichatecnicas
-        public async Task<IActionResult> Index()
+      
+        public async Task<IActionResult> Index(string buscar, int page = 1)
         {
-            var motorcycleContext = _context.Fichatecnicas.Include(f => f.IdClienteNavigation).Include(f => f.IdUsuarioNavigation);
-            return View(await motorcycleContext.ToListAsync());
+            
+
+            int pageSize = 5; // Tamaño de la página
+            var fichatecnicas = _context.Fichatecnicas
+                    .Include(f => f.IdClienteNavigation)
+                    .Include(f => f.IdUsuarioNavigation)
+                    .AsQueryable();
+            if (!String.IsNullOrEmpty(buscar))
+            {
+                fichatecnicas = fichatecnicas.Where(s =>
+                                                       s.NumeroMotorFichaTecnica.Contains(buscar) ||
+                                                       s.CilindrajeFichaTecnica.Contains(buscar) ||
+                                                       s.PlacaFichaTecnica.Contains(buscar) ||
+                                                       s.MarcaFichaTecnica.Contains(buscar) ||
+                                                       s.ChacisFichaTecnica.Contains(buscar) ||
+                                                       s.ModeloFichaTecnica.Contains(buscar) ||
+                                                       s.IdClienteNavigation.NombreCliente.Contains(buscar) ||
+                                                       s.IdUsuarioNavigation.NombreUsuario.Contains(buscar));
+            }
+
+            // Paginación
+            int totalItems = await fichatecnicas.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+            var paginatedFichatecnicas = await fichatecnicas
+                .OrderBy(f => f.IdFichaTecnica) // Asegúrate de ordenar para la paginación
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
+
+            return View(paginatedFichatecnicas);
         }
+
 
         // GET: Fichatecnicas/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -34,9 +69,10 @@ namespace Motorcycle.Controllers
             }
 
             var fichatecnica = await _context.Fichatecnicas
-                .Include(f => f.IdClienteNavigation)
-                .Include(f => f.IdUsuarioNavigation)
+                .Include(f => f.IdClienteNavigation) 
+                .Include(f => f.IdUsuarioNavigation) 
                 .FirstOrDefaultAsync(m => m.IdFichaTecnica == id);
+
             if (fichatecnica == null)
             {
                 return NotFound();
@@ -44,6 +80,7 @@ namespace Motorcycle.Controllers
 
             return View(fichatecnica);
         }
+
 
         // GET: Fichatecnicas/Create
         public IActionResult Create()
@@ -160,14 +197,14 @@ namespace Motorcycle.Controllers
             {
                 _context.Fichatecnicas.Remove(fichatecnica);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool FichatecnicaExists(int id)
         {
-          return (_context.Fichatecnicas?.Any(e => e.IdFichaTecnica == id)).GetValueOrDefault();
+            return (_context.Fichatecnicas?.Any(e => e.IdFichaTecnica == id)).GetValueOrDefault();
         }
     }
 }

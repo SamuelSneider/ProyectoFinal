@@ -17,6 +17,7 @@ namespace Motorcycle.Controllers
     {
         private readonly MotorcycleContext _context;
         private readonly IWebHostEnvironment _enviroment;
+        private const int PageSize = 10; // Tamaño de página para la paginación
 
         public ProductoController(MotorcycleContext context, IWebHostEnvironment enviroment)
         {
@@ -25,10 +26,34 @@ namespace Motorcycle.Controllers
         }
 
         // GET: Producto
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar, int page = 1)
         {
-            var motorcycleContext = _context.Productos.Include(p => p.IdUsuarioNavigation);
-            return View(await motorcycleContext.ToListAsync());
+            var query = _context.Productos
+                .Include(p => p.IdUsuarioNavigation)
+                .AsQueryable();
+
+            // Búsqueda
+            if (!string.IsNullOrEmpty(buscar))
+            {
+                query = query.Where(p =>
+                    p.NombreProducto.Contains(buscar) ||
+                    p.CodigoProducto.Contains(buscar));
+            }
+
+            // Paginación
+            int totalItems = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalItems / PageSize);
+            var paginatedItems = await query
+                .OrderBy(p => p.IdProducto)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToListAsync();
+
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
+            ViewData["SearchQuery"] = buscar;
+
+            return View(paginatedItems);
         }
 
         // GET: Producto/Details/5

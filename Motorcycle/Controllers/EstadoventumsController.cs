@@ -12,6 +12,7 @@ namespace Motorcycle.Controllers
     public class EstadoventumsController : Controller
     {
         private readonly MotorcycleContext _context;
+        private const int PageSize = 10; // Tamaño de página
 
         public EstadoventumsController(MotorcycleContext context)
         {
@@ -19,13 +20,31 @@ namespace Motorcycle.Controllers
         }
 
         // GET: Estadoventums
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar, int page = 1)
         {
-              return _context.Estadoventa != null ? 
-                          View(await _context.Estadoventa.ToListAsync()) :
-                          Problem("Entity set 'MotorcycleContext.Estadoventa'  is null.");
-        }
+            int pageSize = 10; // Tamaño de la página
+            var estadoventas = _context.Estadoventa.AsQueryable();
 
+            if (!string.IsNullOrEmpty(buscar))
+            {
+                estadoventas = estadoventas.Where(s =>
+                    s.NombreEstadoVenta.Contains(buscar)); // Asumiendo que NombreEstadoVenta es el campo a buscar
+            }
+
+            // Paginación
+            int totalItems = await estadoventas.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+            var paginatedEstadoventas = await estadoventas
+                .OrderBy(e => e.IdEstadoVenta) // Asegúrate de ordenar para la paginación
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
+
+            return View(paginatedEstadoventas);
+        }
         // GET: Estadoventums/Details/5
         public async Task<IActionResult> Details(int? id)
         {

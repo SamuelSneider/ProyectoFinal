@@ -12,6 +12,7 @@ namespace Motorcycle.Controllers
     public class MovilclientesController : Controller
     {
         private readonly MotorcycleContext _context;
+        private const int PageSize = 10; // Tamaño de página para la paginación
 
         public MovilclientesController(MotorcycleContext context)
         {
@@ -19,11 +20,34 @@ namespace Motorcycle.Controllers
         }
 
         // GET: Movilclientes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar, int page = 1)
         {
-            var motorcycleContext = _context.Movilclientes.Include(m => m.IdClienteNavigation);
-            return View(await motorcycleContext.ToListAsync());
+            var query = _context.Movilclientes.Include(m => m.IdClienteNavigation).AsQueryable();
+
+            // Búsqueda
+            if (!string.IsNullOrEmpty(buscar))
+            {
+                query = query.Where(m =>
+                    m.NumeroMovilCliente.Contains(buscar) ||
+                    m.IdClienteNavigation.NombreCliente.Contains(buscar));
+            }
+
+            // Paginación
+            int totalItems = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalItems / PageSize);
+            var paginatedItems = await query
+                .OrderBy(m => m.IdMovilCliente)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToListAsync();
+
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
+            ViewData["SearchQuery"] = buscar;
+
+            return View(paginatedItems);
         }
+
 
         // GET: Movilclientes/Details/5
         public async Task<IActionResult> Details(int? id)

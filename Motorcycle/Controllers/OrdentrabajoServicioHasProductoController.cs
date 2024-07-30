@@ -12,6 +12,7 @@ namespace Motorcycle.Controllers
     public class OrdentrabajoServicioHasProductoController : Controller
     {
         private readonly MotorcycleContext _context;
+        private const int PageSize = 10; // Tamaño de página para la paginación
 
         public OrdentrabajoServicioHasProductoController(MotorcycleContext context)
         {
@@ -19,10 +20,35 @@ namespace Motorcycle.Controllers
         }
 
         // GET: OrdentrabajoServicioHasProducto
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar, int page = 1)
         {
-            var motorcycleContext = _context.OrdentrabajoServicioHasProductos.Include(o => o.IdProductoNavigation).Include(o => o.IdServicioOrdenTrabajoNavigation);
-            return View(await motorcycleContext.ToListAsync());
+            var query = _context.OrdentrabajoServicioHasProductos
+                .Include(o => o.IdProductoNavigation)
+                .Include(o => o.IdServicioOrdenTrabajoNavigation)
+                .AsQueryable();
+
+            // Búsqueda
+            if (!string.IsNullOrEmpty(buscar))
+            {
+                query = query.Where(o =>
+                    o.IdProductoNavigation.IdProducto.ToString().Contains(buscar) ||
+                    o.IdServicioOrdenTrabajoNavigation.IdServicioOrdenTrabajo.ToString().Contains(buscar));
+            }
+
+            // Paginación
+            int totalItems = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalItems / PageSize);
+            var paginatedItems = await query
+                .OrderBy(o => o.IdOrdentrabajoServicioHasProductos)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToListAsync();
+
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
+            ViewData["SearchQuery"] = buscar;
+
+            return View(paginatedItems);
         }
 
         // GET: OrdentrabajoServicioHasProducto/Details/5

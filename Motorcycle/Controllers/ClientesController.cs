@@ -12,6 +12,7 @@ namespace Motorcycle.Controllers
     public class ClientesController : Controller
     {
         private readonly MotorcycleContext _context;
+        private const int PageSize = 10; // Tamaño de página
 
         public ClientesController(MotorcycleContext context)
         {
@@ -19,12 +20,33 @@ namespace Motorcycle.Controllers
         }
 
         // GET: Clientes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar, int page = 1)
         {
-              return _context.Clientes != null ? 
-                          View(await _context.Clientes.ToListAsync()) :
-                          Problem("Entity set 'MotorcycleContext.Clientes'  is null.");
+            var clientes = _context.Clientes.AsQueryable();
+
+            if (!String.IsNullOrEmpty(buscar))
+            {
+                clientes = clientes.Where(c =>
+                    c.NombreCliente.Contains(buscar) ||
+                    c.ApellidoCliente.Contains(buscar) ||
+                    c.DocumentoCliente.Contains(buscar)); // Agrega más filtros según sea necesario
+            }
+
+            // Paginación
+            int totalItems = await clientes.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalItems / PageSize);
+            var paginatedClientes = await clientes
+                .OrderBy(c => c.IdCliente) // Ordena por un campo adecuado para la paginación
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToListAsync();
+
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
+
+            return View(paginatedClientes);
         }
+
 
         // GET: Clientes/Details/5
         public async Task<IActionResult> Details(int? id)

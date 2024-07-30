@@ -12,6 +12,7 @@ namespace Motorcycle.Controllers
     public class DetalleventasController : Controller
     {
         private readonly MotorcycleContext _context;
+        private const int PageSize = 10; // Tamaño de página
 
         public DetalleventasController(MotorcycleContext context)
         {
@@ -19,10 +20,38 @@ namespace Motorcycle.Controllers
         }
 
         // GET: Detalleventas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar, int page = 1)
         {
-            var motorcycleContext = _context.Detalleventas.Include(d => d.IdProductoNavigation).Include(d => d.IdVentaNavigation);
-            return View(await motorcycleContext.ToListAsync());
+            int pageSize = 5; // Tamaño de la página
+            var detalleventas = _context.Detalleventas
+                .Include(d => d.IdProductoNavigation)
+                .Include(d => d.IdVentaNavigation)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(buscar))
+            {
+                detalleventas = detalleventas.Where(s =>
+                    s.CantidaDetalleVentas.ToString().Contains(buscar) ||
+                    s.ValorTotalDetalleVentas.ToString().Contains(buscar) ||
+                    s.ValorUnitarioDetalleVentas.ToString().Contains(buscar) ||
+                    s.IdProductoNavigation.NombreProducto.Contains(buscar) || // Asumiendo que NombreProducto es un campo en IdProductoNavigation
+                    s.IdVentaNavigation.IdVenta.ToString().Contains(buscar)); // Asumiendo que IdVenta es un campo en IdVentaNavigation
+
+            }
+
+            // Paginación
+            int totalItems = await detalleventas.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+            var paginatedDetalleventas = await detalleventas
+                .OrderBy(d => d.IdDetalleVentas) // Asegúrate de ordenar para la paginación
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
+
+            return View(paginatedDetalleventas);
         }
 
         // GET: Detalleventas/Details/5

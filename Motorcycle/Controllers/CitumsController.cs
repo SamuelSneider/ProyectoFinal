@@ -12,6 +12,7 @@ namespace Motorcycle.Controllers
     public class CitumsController : Controller
     {
         private readonly MotorcycleContext _context;
+        private const int PageSize = 10; // Tamaño de página
 
         public CitumsController(MotorcycleContext context)
         {
@@ -19,11 +20,37 @@ namespace Motorcycle.Controllers
         }
 
         // GET: Citums
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar, int page = 1)
         {
-            var motorcycleContext = _context.Cita.Include(c => c.IdClienteNavigation).Include(c => c.IdFichaTecnicaNavigation).Include(c => c.IdUsuarioNavigation);
-            return View(await motorcycleContext.ToListAsync());
+            int pageSize = 5;
+            var citas = _context.Cita
+                .Include(c => c.IdClienteNavigation)
+                .Include(c => c.IdUsuarioNavigation)
+                .Include(c => c.IdFichaTecnicaNavigation) // Asegúrate de incluir esta propiedad si la usas en la vista
+                .AsQueryable();
+
+            if (!String.IsNullOrEmpty(buscar))
+            {
+                citas = citas.Where(c =>
+                    c.IdClienteNavigation.NombreCliente.Contains(buscar) ||
+                    c.IdUsuarioNavigation.NombreUsuario.Contains(buscar));
+            }
+
+            // Paginación
+            int totalItems = await citas.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+            var paginatedCitas = await citas
+                .OrderBy(c => c.IdFichaTecnica) // Ordena por un campo adecuado para la paginación
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
+
+            return View(paginatedCitas);
         }
+
 
         // GET: Citums/Details/5
         public async Task<IActionResult> Details(int? id)

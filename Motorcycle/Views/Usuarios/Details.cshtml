@@ -1,6 +1,7 @@
 ﻿@model Motorcycle.Models.Usuario
 
 @{
+    Layout = "_Layout";
     ViewData["Title"] = "Details";
 }
 
@@ -10,51 +11,92 @@
     <h4>Usuario</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-4">
             @Html.DisplayNameFor(model => model.DocumentoUsuario)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-8">
             @Html.DisplayFor(model => model.DocumentoUsuario)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-4">
             @Html.DisplayNameFor(model => model.NombreUsuario)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-8">
             @Html.DisplayFor(model => model.NombreUsuario)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-4">
             @Html.DisplayNameFor(model => model.ApellidoUsuario)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-8">
             @Html.DisplayFor(model => model.ApellidoUsuario)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-4">
             @Html.DisplayNameFor(model => model.PasswordUsuario)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-8">
             @Html.DisplayFor(model => model.PasswordUsuario)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-4">
             @Html.DisplayNameFor(model => model.GeneroUsuario)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-8">
             @Html.DisplayFor(model => model.GeneroUsuario)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-4">
             @Html.DisplayNameFor(model => model.EstadoUsuario)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-8">
             @Html.DisplayFor(model => model.EstadoUsuario)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-4">
             @Html.DisplayNameFor(model => model.IdRolNavigation)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-8">
             @Html.DisplayFor(model => model.IdRolNavigation.IdRol)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.IdUsuario">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-custom-primary btn-sm mr-2" href="@Url.Action("Index")">
+        <i class="fa fa-arrow-left"></i> Back
+    </a>    <!-- Botón para abrir el modal de edición con ícono -->
+    <button type="button" class="btn btn-custom-warning btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#editModal" data-id="@Model.IdUsuario">
+        <i class="fa fa-pencil-alt"></i> Edit
+    </button>
 </div>
+
+<!-- Modal para Editar -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Editar Ficha Técnica</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-edit-form-container">
+                    <!-- El contenido del formulario de edición se cargará aquí mediante AJAX -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#editModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var id = button.data('id');
+                var modal = $(this);
+                $.ajax({
+                    url: '@Url.Action("Edit", "Usuarios")/' + id,
+                    type: 'GET',
+                    success: function (data) {
+                        modal.find('.modal-body #modal-edit-form-container').html(data);
+                    }
+                });
+            });
+        });
+    </script>
+}

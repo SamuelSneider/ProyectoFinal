@@ -12,6 +12,7 @@ namespace Motorcycle.Controllers
     public class InventarioController : Controller
     {
         private readonly MotorcycleContext _context;
+        private const int PageSize = 10; // Tamaño de la página
 
         public InventarioController(MotorcycleContext context)
         {
@@ -19,12 +20,33 @@ namespace Motorcycle.Controllers
         }
 
         // GET: Inventario
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar, int page = 1)
         {
-            var motorcycleContext = _context.Inventarios.Include(i => i.IdProductoNavigation);
-            return View(await motorcycleContext.ToListAsync());
-        }
+            var inventarios = _context.Inventarios.Include(i => i.IdProductoNavigation).AsQueryable();
 
+            // Filtrado por búsqueda
+            if (!string.IsNullOrEmpty(buscar))
+            {
+                inventarios = inventarios.Where(i =>
+                    i.IdProductoNavigation.NombreProducto.Contains(buscar, StringComparison.OrdinalIgnoreCase));
+            }
+
+            // Paginación
+            int totalItems = await inventarios.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalItems / PageSize);
+            var paginatedInventarios = await inventarios
+                .OrderBy(i => i.IdInventario) // Ordenar para paginación
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToListAsync();
+
+            // Pasar datos a la vista
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
+            ViewData["Buscar"] = buscar; // Pasar el término de búsqueda a la vista
+
+            return View(paginatedInventarios);
+        }
         // GET: Inventario/Details/5
         public async Task<IActionResult> Details(int? id)
         {

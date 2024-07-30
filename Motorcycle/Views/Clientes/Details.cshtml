@@ -1,6 +1,7 @@
 ﻿@model Motorcycle.Models.Cliente
 
 @{
+    Layout = "_Layout";
     ViewData["Title"] = "Details";
 }
 
@@ -55,6 +56,47 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.IdCliente">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-custom-primary btn-sm mr-2" href="@Url.Action("Index")">
+        <i class="fa fa-arrow-left"></i> Back
+    </a>
+    <!-- Botón para abrir el modal de edición con ícono -->
+    <button type="button" class="btn btn-custom-warning btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#editModal" data-id="@Model.IdCliente">
+        <i class="fa fa-pencil-alt"></i> Edit
+    </button>
 </div>
+<!-- Modal para Editar -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Editar Clientes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-edit-form-container">
+                    <!-- El contenido del formulario de edición se cargará aquí mediante AJAX -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#editModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var id = button.data('id');
+                var modal = $(this);
+                $.ajax({
+                    url: '@Url.Action("Edit", "Clientes")/' + id,
+                    type: 'GET',
+                    success: function (data) {
+                        modal.find('.modal-body #modal-edit-form-container').html(data);
+                    }
+                });
+            });
+        });
+    </script>
+}

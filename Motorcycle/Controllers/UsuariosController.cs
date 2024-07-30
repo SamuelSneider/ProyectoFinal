@@ -12,6 +12,7 @@ namespace Motorcycle.Controllers
     public class UsuariosController : Controller
     {
         private readonly MotorcycleContext _context;
+        private const int PageSize = 10; // Tamaño de página para la paginación
 
         public UsuariosController(MotorcycleContext context)
         {
@@ -19,10 +20,34 @@ namespace Motorcycle.Controllers
         }
 
         // GET: Usuarios
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar, int page = 1)
         {
-            var motorcycleContext = _context.Usuarios.Include(u => u.IdRolNavigation);
-            return View(await motorcycleContext.ToListAsync());
+            var query = _context.Usuarios
+                .Include(u => u.IdRolNavigation)
+                .AsQueryable();
+
+            // Búsqueda
+            if (!string.IsNullOrEmpty(buscar))
+            {
+                query = query.Where(u => u.NombreUsuario.Contains(buscar) ||
+                                          u.ApellidoUsuario.Contains(buscar) ||
+                                          u.DocumentoUsuario.Contains(buscar));
+            }
+
+            // Paginación
+            int totalItems = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalItems / PageSize);
+            var paginatedItems = await query
+                .OrderBy(u => u.IdUsuario)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToListAsync();
+
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
+            ViewData["SearchQuery"] = buscar;
+
+            return View(paginatedItems);
         }
 
         // GET: Usuarios/Details/5

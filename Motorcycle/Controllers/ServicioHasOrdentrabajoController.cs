@@ -12,6 +12,7 @@ namespace Motorcycle.Controllers
     public class ServicioHasOrdentrabajoController : Controller
     {
         private readonly MotorcycleContext _context;
+        private const int PageSize = 10; // Tamaño de página para la paginación
 
         public ServicioHasOrdentrabajoController(MotorcycleContext context)
         {
@@ -19,10 +20,34 @@ namespace Motorcycle.Controllers
         }
 
         // GET: ServicioHasOrdentrabajo
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar, int page = 1)
         {
-            var motorcycleContext = _context.ServicioHasOrdentrabajos.Include(s => s.IdOrdenTrabajoNavigation).Include(s => s.IdServicioNavigation);
-            return View(await motorcycleContext.ToListAsync());
+            var query = _context.ServicioHasOrdentrabajos
+                .Include(s => s.IdOrdenTrabajoNavigation)
+                .Include(s => s.IdServicioNavigation)
+                .AsQueryable();
+
+            // Búsqueda
+            if (!string.IsNullOrEmpty(buscar))
+            {
+                query = query.Where(s => s.IdOrdenTrabajoNavigation.IdOrdenTrabajo.ToString().Contains(buscar) ||
+                                          s.IdServicioNavigation.NombreServicio.Contains(buscar));
+            }
+
+            // Paginación
+            int totalItems = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalItems / PageSize);
+            var paginatedItems = await query
+                .OrderBy(s => s.IdServicioOrdenTrabajo)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToListAsync();
+
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
+            ViewData["SearchQuery"] = buscar;
+
+            return View(paginatedItems);
         }
 
         // GET: ServicioHasOrdentrabajo/Details/5

@@ -1,53 +1,184 @@
 ﻿@model IEnumerable<Motorcycle.Models.Inventario>
 
 @{
-    ViewData["Title"] = "Index";
+    Layout = "_Layout";
+    ViewData["Title"] = "Inventario";
 }
 
-<h1>Index</h1>
+<div class="container mt-4">
+    <!-- Contenedor unificado para título, formulario de búsqueda y tabla -->
+    <div class="unified-container border rounded shadow-sm">
+        <!-- Contenedor para título y botón -->
+        <div class="title-container border rounded p-3 mbb-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="mb-0">Lista de Inventario</h1>
+                <button type="button" class="btn btn-primarys btn-sm" data-bs-toggle="modal" data-bs-target="#createModal">
+                    <i class="fa fa-plus"></i> Nuevo Registro
+                </button>
+            </div>
+        </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CantidadInventario)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaMovimientoInventario)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ValorUnitarioInventario)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdProductoNavigation.NombreProducto)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CantidadInventario)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaMovimientoInventario)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ValorUnitarioInventario)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdProductoNavigation.NombreProducto)
-            </td>
-            <td>
-                    <a asp-action="Edit" class="btn btn-warning" asp-route-id="@item.IdInventario">Edit</a> |
-                    <a asp-action="Details" class="btn btn-primary" asp-route-id="@item.IdInventario">Details</a> |
-                    <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.IdInventario">Delete</a>
-            </td>
-        </tr>
+        <!-- Contenedor para el formulario de búsqueda -->
+        <div class="search-container border rounded p-3 mbb-3">
+            <form asp-controller="Inventario" asp-action="Index" method="get" class="form-inline mb-0">
+                <div class="form-group mb-0 d-flex align-items-center">
+                    <input type="text" name="buscar" class="form-control form-control-sm" placeholder="Buscar" style="width: 300px;" />
+                    <button type="submit" class="btn btn-light btn-sm ml-2 d-flex align-items-center">
+                        <i class="fa fa-search" style="color: gray;"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Contenedor para la tabla -->
+        <div class="table-responsive border rounded p-3">
+            <table class="table table-striped table-sm mb-0">
+                <thead class="theadd-light">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.CantidadInventario)</th>
+                        <th>@Html.DisplayNameFor(model => model.FechaMovimientoInventario)</th>
+                        <th>@Html.DisplayNameFor(model => model.ValorUnitarioInventario)</th>
+                        <th>@Html.DisplayNameFor(model => model.IdProductoNavigation.NombreProducto)</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.CantidadInventario)</td>
+                            <td>@Html.DisplayFor(modelItem => item.FechaMovimientoInventario)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ValorUnitarioInventario)</td>
+                            <td>@Html.DisplayFor(modelItem => item.IdProductoNavigation.NombreProducto)</td>
+                            <td>
+                                <button type="button" class="btn btn-custom-warning btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#editModal" data-id="@item.IdInventario">
+                                    <i class="fa fa-pencil-alt"></i>
+                                </button>
+
+                                <a asp-action="Details" class="btn btn-custom-primary btn-sm mr-2" asp-route-id="@item.IdInventario">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.IdInventario">
+                                    <i class="fa fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Paginación -->
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <div>
+                @{
+                    var currentPage = ViewData["CurrentPage"] as int? ?? 1;
+                    var totalPages = ViewData["TotalPages"] as int? ?? 1;
+                }
+                <a class="btn btn-light btn-sm @(currentPage == 1 ? "disabled" : "")" asp-action="Index" asp-route-page="@(currentPage - 1)">
+                    <i class="fa fa-chevron-left"></i>
+                </a>
+                <span>Página @currentPage de @totalPages</span>
+                <a class="btn btn-light btn-sm @(currentPage == totalPages ? "disabled" : "")" asp-action="Index" asp-route-page="@(currentPage + 1)">
+                    <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Crear -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createModalLabel">Crear Inventario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-form-container">
+                    <!-- El contenido del formulario se cargará aquí mediante AJAX -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Editar -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Editar Inventario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-edit-form-container">
+                    <!-- El contenido del formulario de edición se cargará aquí mediante AJAX -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Eliminar -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Eliminar Inventario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-delete-form-container">
+                    <!-- El contenido del formulario de eliminación se cargará aquí mediante AJAX -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#createModal').on('show.bs.modal', function () {
+                var modal = $(this);
+                $.ajax({
+                    url: '@Url.Action("Create", "Inventario")',
+                    type: 'GET',
+                    success: function (data) {
+                        modal.find('.modal-body #modal-form-container').html(data);
+                    }
+                });
+            });
+
+            $('#editModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var id = button.data('id');
+                var modal = $(this);
+                $.ajax({
+                    url: '@Url.Action("Edit", "Inventario")/' + id,
+                    type: 'GET',
+                    success: function (data) {
+                        modal.find('.modal-body #modal-edit-form-container').html(data);
+                    }
+                });
+            });
+
+            $('#deleteModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var id = button.data('id');
+                var modal = $(this);
+                $.ajax({
+                    url: '@Url.Action("Delete", "Inventario")/' + id,
+                    type: 'GET',
+                    success: function (data) {
+                        modal.find('.modal-body #modal-delete-form-container').html(data);
+                    }
+                });
+            });
+        });
+    </script>
 }
-    </tbody>
-</table>

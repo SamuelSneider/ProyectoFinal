@@ -11,29 +11,28 @@
         <div class="title-container border rounded p-3 mbb-3">
             <div class="d-flex justify-content-between align-items-center">
                 <h1 class="mb-0">Listado de Roles</h1>
-                <a asp-action="Create" class="btn btn-primary btn-sm">
+                <button type="button" class="btn btn-primarys btn-sm" data-bs-toggle="modal" data-bs-target="#createModal">
                     <i class="fa fa-plus"></i> Nuevo Registro
-                </a>
+                </button>
             </div>
         </div>
 
         <!-- Contenedor para el formulario de búsqueda -->
-        <div class="search-container borderr rounded p-3 mbb-3">
-            @using (Html.BeginForm("Index", "Rol", FormMethod.Get, new { @class = "form-inline mb-0" }))
-            {
+        <div class="search-container border rounded p-3 mbb-3">
+            <form asp-controller="Rol" asp-action="Index" method="get" class="form-inline mb-0">
                 <div class="form-group mb-0 d-flex align-items-center">
-                    @Html.TextBox("searchTerm", null, new { @class = "form-control form-control-sm", @placeholder = "Buscar", @style = "width: 300px;" })
+                    <input type="text" name="buscar" class="form-control form-control-sm" placeholder="Buscar" style="width: 300px;" />
                     <button type="submit" class="btn btn-light btn-sm ml-2 d-flex align-items-center">
                         <i class="fa fa-search" style="color: gray;"></i>
                     </button>
                 </div>
-            }
+            </form>
         </div>
 
         <!-- Contenedor para la tabla -->
         <div class="table-responsive border rounded p-3">
             <table class="table table-striped table-sm mb-0">
-                <thead class="thead-light">
+                <thead class="theadd-light">
                     <tr>
                         <th>@Html.DisplayNameFor(model => model.NombreRol)</th>
                         <th>Acciones</th>
@@ -45,15 +44,15 @@
                         <tr>
                             <td>@Html.DisplayFor(modelItem => item.NombreRol)</td>
                             <td>
-                                <a asp-action="Edit" class="btn btn-warning btn-sm mr-2" asp-route-id="@item.IdRol">
+                                <button type="button" class="btn btn-custom-warning btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#editModal" data-id="@item.IdRol">
                                     <i class="fa fa-pencil-alt"></i>
-                                </a>
-                                <a asp-action="Details" class="btn btn-primary btn-sm mr-2" asp-route-id="@item.IdRol">
+                                </button>
+                                <a asp-action="Details" class="btn btn-custom-primary btn-sm mr-2" asp-route-id="@item.IdRol">
                                     <i class="fa fa-eye"></i>
                                 </a>
-                                <a asp-action="Delete" class="btn btn-danger btn-sm" asp-route-id="@item.IdRol">
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.IdRol">
                                     <i class="fa fa-trash-alt"></i>
-                                </a>
+                                </button>
                             </td>
                         </tr>
                     }
@@ -62,3 +61,98 @@
         </div>
     </div>
 </div>
+
+<!-- Modal para Crear -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createModalLabel">Crear Rol</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-form-container">
+                    <!-- El contenido del formulario se cargará aquí mediante AJAX -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Editar -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Editar Rol</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-edit-form-container">
+                    <!-- El contenido del formulario de edición se cargará aquí mediante AJAX -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Eliminar -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Eliminar Rol</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-delete-form-container">
+                    <!-- El contenido del formulario de eliminación se cargará aquí mediante AJAX -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#createModal').on('show.bs.modal', function () {
+                var modal = $(this);
+                $.ajax({
+                    url: '@Url.Action("Create", "Rol")',
+                    type: 'GET',
+                    success: function (data) {
+                        modal.find('.modal-body #modal-form-container').html(data);
+                    }
+                });
+            });
+
+            $('#editModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var id = button.data('id');
+                var modal = $(this);
+                $.ajax({
+                    url: '@Url.Action("Edit", "Rol")/' + id,
+                    type: 'GET',
+                    success: function (data) {
+                        modal.find('.modal-body #modal-edit-form-container').html(data);
+                    }
+                });
+            });
+
+            $('#deleteModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var id = button.data('id');
+                var modal = $(this);
+                $.ajax({
+                    url: '@Url.Action("Delete", "Rol")/' + id,
+                    type: 'GET',
+                    success: function (data) {
+                        modal.find('.modal-body #modal-delete-form-container').html(data);
+                    }
+                });
+            });
+        });
+    </script>
+}

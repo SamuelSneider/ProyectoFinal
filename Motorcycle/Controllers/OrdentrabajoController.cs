@@ -12,6 +12,7 @@ namespace Motorcycle.Controllers
     public class OrdentrabajoController : Controller
     {
         private readonly MotorcycleContext _context;
+        private const int PageSize = 10; // Tamaño de página para la paginación
 
         public OrdentrabajoController(MotorcycleContext context)
         {
@@ -19,11 +20,37 @@ namespace Motorcycle.Controllers
         }
 
         // GET: Ordentrabajo
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar, int page = 1)
         {
-            var motorcycleContext = _context.Ordentrabajos.Include(o => o.IdCitaNavigation).Include(o => o.IdVentaNavigation);
-            return View(await motorcycleContext.ToListAsync());
+            var query = _context.Ordentrabajos.Include(o => o.IdCitaNavigation)
+                                              .Include(o => o.IdVentaNavigation)
+                                              .AsQueryable();
+
+            // Búsqueda
+            if (!string.IsNullOrEmpty(buscar))
+            {
+                query = query.Where(o =>
+                     o.NumeroOrdenTrabajo.ToString().Contains(buscar) ||
+                     o.IdCitaNavigation.IdCita.ToString().Contains(buscar) ||
+                     o.IdVentaNavigation.IdVenta.ToString().Contains(buscar));
+            }
+
+            // Paginación
+            int totalItems = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalItems / PageSize);
+            var paginatedItems = await query
+                .OrderBy(o => o.IdOrdenTrabajo)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToListAsync();
+
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
+            ViewData["SearchQuery"] = buscar;
+
+            return View(paginatedItems);
         }
+
 
         // GET: Ordentrabajo/Details/5
         public async Task<IActionResult> Details(int? id)
