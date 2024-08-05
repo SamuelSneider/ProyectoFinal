@@ -16,6 +16,7 @@ namespace Motorcycle.Models
         {
         }
 
+
         public virtual DbSet<Citum> Cita { get; set; } = null!;
         public virtual DbSet<Cliente> Clientes { get; set; } = null!;
         public virtual DbSet<Correocliente> Correoclientes { get; set; } = null!;
@@ -143,7 +144,7 @@ namespace Motorcycle.Models
 
                 entity.Property(e => e.IdCorreoCliente).HasColumnName("idCorreoCliente");
 
-                entity.Property(e => e.CorreoCliente)
+                entity.Property(e => e.CorreoCliente1)
                     .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("correoCliente");
@@ -166,7 +167,7 @@ namespace Motorcycle.Models
 
                 entity.Property(e => e.IdCorreoUsuario).HasColumnName("idCorreoUsuario");
 
-                entity.Property(e => e.CorreoUsuario)
+                entity.Property(e => e.CorreoUsuario1)
                     .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("correoUsuario");

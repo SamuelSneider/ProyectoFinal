@@ -39,40 +39,7 @@
     <None Include="wwwroot\dist\css\alt\adminlte.plugins.css.map" />
     <None Include="wwwroot\dist\css\alt\adminlte.plugins.min.css" />
     <None Include="wwwroot\dist\css\alt\adminlte.plugins.min.css.map" />
-    <None Include="wwwroot\dist\img\AdminLTELogo.png" />
-    <None Include="wwwroot\dist\img\avatar.png" />
-    <None Include="wwwroot\dist\img\avatar2.png" />
-    <None Include="wwwroot\dist\img\avatar3.png" />
-    <None Include="wwwroot\dist\img\avatar4.png" />
-    <None Include="wwwroot\dist\img\avatar5.png" />
-    <None Include="wwwroot\dist\img\boxed-bg.jpg" />
-    <None Include="wwwroot\dist\img\boxed-bg.png" />
-    <None Include="wwwroot\dist\img\credit\american-express.png" />
-    <None Include="wwwroot\dist\img\credit\cirrus.png" />
-    <None Include="wwwroot\dist\img\credit\mastercard.png" />
-    <None Include="wwwroot\dist\img\credit\paypal.png" />
-    <None Include="wwwroot\dist\img\credit\paypal2.png" />
-    <None Include="wwwroot\dist\img\credit\visa.png" />
-    <None Include="wwwroot\dist\img\default-150x150.png" />
-    <None Include="wwwroot\dist\img\icons.png" />
     <None Include="wwwroot\dist\img\logo3.png" />
-    <None Include="wwwroot\dist\img\photo1.png" />
-    <None Include="wwwroot\dist\img\photo2.png" />
-    <None Include="wwwroot\dist\img\photo3.jpg" />
-    <None Include="wwwroot\dist\img\photo4.jpg" />
-    <None Include="wwwroot\dist\img\prod-1.jpg" />
-    <None Include="wwwroot\dist\img\prod-2.jpg" />
-    <None Include="wwwroot\dist\img\prod-3.jpg" />
-    <None Include="wwwroot\dist\img\prod-4.jpg" />
-    <None Include="wwwroot\dist\img\prod-5.jpg" />
-    <None Include="wwwroot\dist\img\user1-128x128.jpg" />
-    <None Include="wwwroot\dist\img\user2-160x160.jpg" />
-    <None Include="wwwroot\dist\img\user3-128x128.jpg" />
-    <None Include="wwwroot\dist\img\user4-128x128.jpg" />
-    <None Include="wwwroot\dist\img\user5-128x128.jpg" />
-    <None Include="wwwroot\dist\img\user6-128x128.jpg" />
-    <None Include="wwwroot\dist\img\user7-128x128.jpg" />
-    <None Include="wwwroot\dist\img\user8-128x128.jpg" />
     <None Include="wwwroot\dist\js\adminlte.js" />
     <None Include="wwwroot\dist\js\adminlte.js.map" />
     <None Include="wwwroot\dist\js\adminlte.min.js" />
@@ -81,7 +48,10 @@
     <None Include="wwwroot\dist\js\pages\dashboard.js" />
     <None Include="wwwroot\dist\js\pages\dashboard2.js" />
     <None Include="wwwroot\dist\js\pages\dashboard3.js" />
-    <None Include="wwwroot\imagenes\logo3.png" />
+    <None Include="wwwroot\icons-social\facebook.svg" />
+    <None Include="wwwroot\icons-social\github.svg" />
+    <None Include="wwwroot\icons-social\google.svg" />
+    <None Include="wwwroot\icons-social\twitter.svg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -92,6 +62,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.17" />
+    <PackageReference Include="papercut" Version="2010.3.3.20130622" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Temporal\" />
   </ItemGroup>
 
 </Project>

@@ -30,7 +30,7 @@ namespace Motorcycle.Controllers
             if (!String.IsNullOrEmpty(buscar))
             {
                 correoclientes = correoclientes.Where(c =>
-                    c.CorreoCliente.Contains(buscar) || // Usa el nombre de propiedad correcto aquí
+                    c.CorreoCliente1.Contains(buscar) || // Usa el nombre de propiedad correcto aquí
                     c.IdClienteNavigation.NombreCliente.Contains(buscar));
             }
 

@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Motorcycle.Models;
+using Motorcycle.Services;
+
 
 namespace Motorcycle.Controllers
 {
@@ -13,10 +18,14 @@ namespace Motorcycle.Controllers
     {
         private readonly MotorcycleContext _context;
         private const int PageSize = 10; // Tamaño de página
+        private readonly IEmailSender _emailSender;
 
-        public CorreousuariosController(MotorcycleContext context)
+        public CorreousuariosController(MotorcycleContext context, IEmailSender emailSender)
         {
             _context = context;
+            _emailSender = emailSender;
+
+
         }
 
         // GET: Correousuarios
@@ -30,7 +39,7 @@ namespace Motorcycle.Controllers
             if (!string.IsNullOrEmpty(buscar))
             {
                 correousuarios = correousuarios.Where(s =>
-                    s.CorreoUsuario.Contains(buscar) ||
+                    s.CorreoUsuario1.Contains(buscar) ||
                     s.IdUsuarioNavigation.NombreUsuario.Contains(buscar));
             }
 
@@ -178,14 +187,78 @@ namespace Motorcycle.Controllers
             {
                 _context.Correousuarios.Remove(correousuario);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CorreousuarioExists(int id)
         {
-          return (_context.Correousuarios?.Any(e => e.IdCorreoUsuario == id)).GetValueOrDefault();
+            return (_context.Correousuarios?.Any(e => e.IdCorreoUsuario == id)).GetValueOrDefault();
         }
+        [HttpGet]
+        public IActionResult CorreoViewModel()
+        {
+            return View(new CorreoViewModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EnviarCorreo(CorreoViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Asegurarse de que los campos no sean nulos o vacíos
+                if (!string.IsNullOrWhiteSpace(model.Para) &&
+                    !string.IsNullOrWhiteSpace(model.Asunto) &&
+                    !string.IsNullOrWhiteSpace(model.Mensaje))
+                {
+                    string? attachmentPath = null;
+
+                    if (model.Fichero != null && model.Fichero.Length > 0)
+                    {
+                        var fileName = Path.GetFileName(model.Fichero.FileName);
+                        var tempFilePath = Path.Combine(Path.GetTempPath(), fileName);
+
+                        using (var stream = new FileStream(tempFilePath, FileMode.Create))
+                        {
+                            await model.Fichero.CopyToAsync(stream);
+                        }
+
+                        attachmentPath = tempFilePath;
+                    }
+
+                    try
+                    {
+                        await _emailSender.SendEmailAsync(
+                            model.Para ?? throw new ArgumentNullException(nameof(model.Para)),
+                            model.Asunto ?? throw new ArgumentNullException(nameof(model.Asunto)),
+                            model.Mensaje ?? throw new ArgumentNullException(nameof(model.Mensaje)),
+                            attachmentPath
+                        );
+
+                        ViewBag.Message = "Correo enviado exitosamente.";
+
+                        if (attachmentPath != null)
+                        {
+                            System.IO.File.Delete(attachmentPath);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ViewBag.Message = $"Error al enviar el correo: {ex.Message}";
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Todos los campos son obligatorios.");
+                }
+
+                return View("CorreoViewModel", new CorreoViewModel());
+            }
+
+            return View("CorreoViewModel", model);
+        }
+
+
     }
 }

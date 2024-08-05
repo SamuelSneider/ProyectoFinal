@@ -181,4 +181,22 @@ body {
     background-color: white;
 }
 
+.col-mds-3 {
+    -ms-flex: 0 0 25%;
+    /* flex: 0 0 25%; */
+    max-width: 15%;
+}
+
+/* Asegura la alineación vertical en todas las celdas */
+
+
+/* Estilo para el checkbox */
+.custom-checkbox {
+    margin-right: 20px; /* Ajusta el margen según tus necesidades */
+}
+.card-primary.card-outline {
+    border-top: 3px solid #ff0023;
+}
+/*------------------------------------------------------------------------------------------------------------*/
+
 

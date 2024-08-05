@@ -1,14 +1,18 @@
 using Microsoft.EntityFrameworkCore;
 using Motorcycle.Models;
+using Motorcycle.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+
 IServiceCollection serviceCollection = builder.Services.AddDbContext<MotorcycleContext>(options =>
        options.UseSqlServer(builder.Configuration.GetConnectionString("conexion")));
 
+// Registrar el servicio de correo electrónico
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 

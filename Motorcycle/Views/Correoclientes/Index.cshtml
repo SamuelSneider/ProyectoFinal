@@ -35,7 +35,7 @@
             <table class="table table-striped table-sm mb-0">
                 <thead class="theadd-light">
                     <tr>
-                        <th>@Html.DisplayNameFor(model => model.CorreoCliente)</th>
+                        <th>@Html.DisplayNameFor(model => model.CorreoCliente1)</th>
                         <th>@Html.DisplayNameFor(model => model.IdClienteNavigation.NombreCliente)</th>
                         <th>Acciones</th>
                     </tr>
@@ -44,7 +44,7 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@Html.DisplayFor(modelItem => item.CorreoCliente)</td>
+                            <td>@Html.DisplayFor(modelItem => item.CorreoCliente1)</td>
                             <td>@Html.DisplayFor(modelItem => item.IdClienteNavigation.NombreCliente)</td>
                             <td>
                                 <button type="button" class="btn btn-custom-warning btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#editModal" data-id="@item.IdCorreoCliente">

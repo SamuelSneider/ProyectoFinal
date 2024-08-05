@@ -1,6 +1,495 @@
 ﻿@{
     ViewData["Title"] = "Privacy Policy";
+    Layout = null;
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<!DOCTYPE html>
+
+<html lang="es">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="asset/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+    <link href="asset/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/bootstrap-grid.css" rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="~/css/cliente.css" rel="stylesheet" />
+    <link href="~/resources/css/glightbox.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/bootstrap/dist/css/glightbox.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <form runat="server">
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+                <asp:PlaceHolder runat="server">
+                </asp:PlaceHolder>
+                <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+                </asp:ContentPlaceHolder>  
+                <asp:PlaceHolder runat="server">
+                </asp:PlaceHolder>
+            </Scripts>
+
+        </asp:ScriptManager>
+
+        <header id="header" class="fixed-top d-flex align-items-center">
+            <div class="container d-flex align-items-center justify-content-between">
+
+                <h1 class="logo"><a>MOTORCYCLE</a></h1>
+
+
+                <nav id="navbar" class="navbar">
+                    <ul>
+                        <li><a class="nav-link scrollto active" href="#hero">Inicio</a></li>
+                        <li><a class="nav-link scrollto" href="#repuestos">repuestos</a></li>
+                        <li><a class="nav-link scrollto " href="#portfolio">Productos</a></li>
+                        <li><a class="nav-link scrollto" href="#team">Cerrar sesion</a></li>
+                        
+                    </ul>
+
+                    <i class="bi bi-list mobile-nav-toggle"></i>
+                </nav>
+
+            </div>
+        </header>
+
+
+        <div class="container body-content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                
+
+                    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                            <li data-target="#myCarousel" data-slide-to="1"></li>
+                            <li data-target="#myCarousel" data-slide-to="2"></li>
+                        </ol>
+                        <div class="carousell-inner">
+                            <div class="carousel-item active">
+                                <img src="~/imagenes/slide/parallax-image1.jpg" class="d-block w-100 diseño-image" alt="Primera Imagen">
+                                <div class="carousel-caption d-none d-md-block"></div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="~/imagenes/slide/2015-YZ250F-1.png" class="d-block w-100 Diseño-image" alt="Segunda Imagen">
+                                <div class="carousel-caption d-none d-md-block"></div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="~/imagenes/slide/2014-Harley-Davidson-Fat-Bob-3.png" class="d-block w-100 Diseño-image" alt="Tercera Imagen">
+                                <div class="carousel-caption d-none d-md-block"></div>
+                            </div>
+                        </div>
+
+
+                        <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Anterior</span>
+                        </a>
+                        <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Siguiente</span>
+                        </a>
+                    </div>
+                    <section id="clients" class="clients section-bg">
+                        <div class="container">
+
+                            <div class="row">
+
+                                <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
+                                    <img src="~/imagenes/marcas/auteco.png" class="img-fluid" alt="Auteco">
+                                </div>
+
+                                <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
+                                    <img src="~/imagenes/marcas/bajaj.png" class="img-fluid" alt="Bajaj">
+                                </div>
+
+                                <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
+                                    <img src="~/imagenes/marcas/honda.png" class="img-fluid" alt="Honda">
+                                </div>
+
+                                <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
+                                    <img src="~/imagenes/marcas/suzuki.png" class="img-fluid" alt="Suzuki">
+                                </div>
+
+                                <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
+                                    <img src="~/imagenes/marcas/Kawasaki1.png" class="img-fluid" alt="Kawasaki">
+                                </div>
+
+                                <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
+                                    <img src="~/imagenes/marcas/yamaha.png" class="img-fluid" alt="Yamaha">
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </section>
+                    <section id="portfolio" class="portfolio">
+                        <div class="container">
+
+                            <div class="section-title">
+                                <h2>Productos</h2>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12 d-flex justify-content-center">
+                                    <ul id="portfolio-flters">
+                                        <li data-filter="*" class="filter-acesorios">AScesorios</li>
+                                        <li data-filter=".filter-Ropa">Ropa</li>
+                                        <li data-filter=".filter-Cascos">Cascos</li>
+                                        <li data-filter=".filter-Guantes">Guantes</li>
+                                        <li data-filter=".filter-Protectores">Protectores</li>
+                                        <li data-filter=".filter-Mochilas">Mochilas</li>
+                                        <li data-filter=".filter-Lujos">Lujos</li>
+                                        <li data-filter=".filter-Maleteros">Maleteros</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="row portfolio-container">
+
+                                <div class="col-lg-4 col-md-6 portfolio-item filter-Ropa">
+                                    <div class="portfolio-wrap">
+                                    <img src="~/imagenes/portfolio/Thor-MX-Flux-Seek-Mens-Pants-1.png" class="img-fluid">
+                                        <div class="portfolio-info">
+                                            <h4>Ropa</h4>
+                                            <p>Pantalones de proteccion</p>
+                                            <div class="portfolio-links">
+                                                <a href="~/imagenes/portfolio/Thor-MX-Flux-Seek-Mens-Pants-1.png" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 1"><i class="fas fa-plus" style="font-size: 2rem"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6 portfolio-item filter-Protectores">
+                                    <div class="portfolio-wrap">
+                                        <img src="~/imagenes/portfolio/2011-THOR-SECTOR-KNEE-GUARDS-1.png" class="img-fluid" alt="">
+                                        <div class="portfolio-info">
+                                            <h4>Protectores</h4>
+                                            <p>Protector</p>
+                                            <div class="portfolio-links">
+                                                <a href="~/imagenes/portfolio/2011-THOR-SECTOR-KNEE-GUARDS-1.png" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Protector"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6 portfolio-item filter-Cascos">
+                                    <div class="portfolio-wrap">
+                                        <img src="~/imagenes/portfolio/Arai-Tour-X3-Long-Way-Down-Motorcycle-Helmet-1-150x150.png" class="img-fluid" alt="">
+                                        <div class="portfolio-info">
+                                            <h4>Casco</h4>
+                                            <p>Casco</p>
+                                            <div class="portfolio-links">
+                                                <a href="~/imagenes/portfolio/Arai-Tour-X3-Long-Way-Down-Motorcycle-Helmet-1-150x150.png" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Casco"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6 portfolio-item filter-Guantes">
+                                    <div class="portfolio-wrap">
+                                        <img src="~/imagenes/portfolio/guantes.png" class="img-fluid" alt="">
+                                        <div class="portfolio-info">
+                                            <h4>Guantes</h4>
+                                            <p>Guante</p>
+                                            <div class="portfolio-links">
+                                                <a href="~/imagenes/portfolio/guantes.png" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Guante"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6 portfolio-item filter-Mochilas">
+                                    <div class="portfolio-wrap">
+                                        <img src="~/imagenes/portfolio/mochila.png" class="img-fluid" alt="">
+                                        <div class="portfolio-info">
+                                            <h4>Mochilas</h4>
+                                            <p>Mochila</p>
+                                            <div class="portfolio-links">
+                                                <a href="~/imagenes/portfolio/mochila.png" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Mochila"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6 portfolio-item filter-Maleteros">
+                                    <div class="portfolio-wrap">
+                                        <img src="~/imagenes/portfolio/maletero.png" class="img-fluid" alt="">
+                                        <div class="portfolio-info">
+                                            <h4>Maleteros</h4>
+                                            <p>Maletero</p>
+                                            <div class="portfolio-links">
+                                                <a href="~/imagenes/portfolio/maletero.png" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Maletero"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6 portfolio-item filter-Lujos">
+                                    <div class="portfolio-wrap">
+                                        <img src="~/imagenes/portfolio/luces.png" class="img-fluid" alt="">
+                                        <div class="portfolio-info">
+                                            <h4>Lujos</h4>
+                                            <p>Luces</p>
+                                            <div class="portfolio-links">
+                                                <a href="~/imagenes/portfolio/luces.png" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Luces"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <section id="repuestos" class="repuestos">
+                        <div class="container">
+
+                            <div class="section-title">
+                                <h2>Repuestos</h2>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12 d-flex justify-content-center">
+                                    <ul id="repuestos-flters">
+                                        <li data-filter="*" class="filter-autopartes">Autopartes</li>
+                                        <li data-filter=".filter-Cilindros">Cilindro</li>
+                                        <li data-filter=".filter-Culatas">Culata</li>
+                                        <li data-filter=".filter-Llantas">Llantas</li>
+                                        <li data-filter=".filter-Cadenillas">Cadenilla</li>
+                                        <li data-filter=".filter-Tigeras">Tigeras</li>
+                                        <li data-filter=".filter-Chacis">Chacis</li>
+                                        <li data-filter=".filter-Barras">Barras</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="row repuestos-container">
+
+                                <div class="col-lg-4 col-md-6 repuestos-item filter-Cilindros">
+                                    <div class="repuestos-wrap">
+                                        <img src="~/imagenes/repuestos/cilindro.png" class="img-fluid" alt="">
+                                        <div class="repuestos-info">
+                                            <h4>Cilindros</h4>
+                                            <p>Cilindro</p>
+                                            <div class="repuestos-links">
+                                                <a href="~imagenes/repuestos/cilindro.png" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Cilindro"><i class="fas fa-plus"></i></a>
+                                                <a href="portfolio-details.html" title="More Details"><i class="fa bx-link"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6 repuestos-item filter-Culatas">
+                                    <div class="repuestos-wrap">
+                                        <img src="~/imagenes/repuestos/Culata.png" class="img-fluid" alt="">
+                                        <div class="repuestos-info">
+                                            <h4>Culatas</h4>
+                                            <p>Culata</p>
+                                            <div class="repuestos-links">
+                                                <a href="~/imagenes/repuestos/Culata.png" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Culata"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6 repuestos-item filter-Llantas">
+                                    <div class="repuestos-wrap">
+                                        <img src="~/imagenes/repuestos/llantas.png" class="img-fluid" alt="">
+                                        <div class="repuestos-info">
+                                            <h4>Llantas</h4>
+                                            <p>Llanta</p>
+                                            <div class="repuestos-links">
+                                                <a href="~/imagenes/repuestos/llantas.png" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Llantas"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6 repuestos-item filter-Cadenillas">
+                                    <div class="repuestos-wrap">
+                                    <img src="~/imagenes/repuestos/cadenilla.png" class="img-fluid" alt="">
+                                        <div class="repuestos-info">
+                                            <h4>Cadenillas</h4>
+                                            <p>Cadenilla</p>
+                                            <div class="repuestos-links">
+                                            <a href="~/imagenes/repuestos/cadenilla.png" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Cadenilla"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6 repuestos-item filter-Chacis">
+                                    <div class="repuestos-wrap">
+                                    <img src="~/imagenes/repuestos/chacis.png" class="img-fluid" alt="">
+                                        <div class="repuestos-info">
+                                            <h4>Chacis</h4>
+                                            <p>Chaci</p>
+                                            <div class="repuestos-links">
+                                            <a href="~/imagenes/repuestos/chacis.png" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Chaci"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6 repuestos-item filter-Tigeras">
+                                    <div class="repuestos-wrap">
+                                    <img src="~/imagenes/repuestos/tigera.png" class="img-fluid" alt="">
+                                        <div class="repuestos-info">
+                                            <h4>Tigeras</h4>
+                                            <p>Tigera</p>
+                                            <div class="repuestos-links">
+                                            <a href="~/imagenes/repuestos/tigera.png" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Tigera"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6 repuestos-item filter-Barras">
+                                    <div class="repuestos-wrap">
+                                    <img src="~/imagenes/repuestos/barras.png" class="img-fluid" alt="">
+                                        <div class="repuestos-info">
+                                            <h4>Barras</h4>
+                                            <p>Barra</p>
+                                            <div class="repuestos-links">
+                                            <a href="~/imagenes/repuestos/barras.png" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Barra"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                   
+                
+            </asp:ContentPlaceHolder>
+
+            <footer id="footer">
+                <div class="footer-top">
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="col-lg-2 col-md-6 footer-links">
+                                <h4></h4>
+
+                            </div>
+
+
+                            <div class="col-lg-3 col-md-6">
+                                <div class="footer-info">
+                                    <h3>Delta Motos</h3>
+                                    <p>
+                                        Dirección: Carrera 7 #123-45<br />
+                                        Bogotá, Colombia<br />
+                                        <br />
+                                        <strong>Teléfono:</strong> +57 123 456789<br />
+                                        <strong>Email:</strong> gaesadso4@gmail.com<br />
+                                    </p>
+                                    <div class="social-links mt-3">
+                                        <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
+                                        <a href="#" class="facebook"><i class="fab fa-facebook"></i></a>
+                                        <a href="#" class="instagram"><i class="fab fa-instagram"></i></a>
+                                        <a href="#" class="google-plus"><i class="fab fa-google-plus"></i></a>
+                                        <a href="#" class="linkedin"><i class="fab fa-linkedin"></i></a>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2 col-md-6 footer-links">
+                                <h4>Enlaces útiles</h4>
+                                <ul>
+                                    <li><i class="fas fa-chevron-right"></i><a href="#">Inicio</a></li>
+                                    <li><i class="fas fa-chevron-right"></i><a href="#repuestos">repuestos</a></li>
+                                    <li><i class="fas fa-chevron-right"></i><a href="#portfolio">Productos</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 footer-links">
+                                <h4> Servicios</h4>
+                                    <sp href="#">Venta de Productos</sp>
+                                     <br/>
+                                    <sp href="#">Servicio de Mantenimiento y reparación</sp>
+                                     <br/>
+                                    <sp href="#">Venta de Repuestos</sp>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="copyright">
+                        &copy; Derechos de autor <strong><span>gaes adso 4</span></strong>. Todos los derechos reservados
+                    </div>
+                    <div class="credits">
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </form>
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/Scripts/bootstrap.js") %>
+    </asp:PlaceHolder>
+    <script>
+
+        $(document).ready(function () {
+
+            const lightbox = GLightbox({
+                selector: '.glightbox'
+            });
+            $('#portfolio-flters li').click(function () {
+                var filterValue = $(this).attr('data-filter');
+                if (filterValue === '*') {
+                    $('.portfolio-item').show();
+                } else {
+                    $('.portfolio-item').hide();
+                    $(filterValue).show();
+                }
+                $('#portfolio-flters li').removeClass('filter-active');
+                $(this).addClass('filter-active');
+            });
+
+            $('#repuestos-flters li').click(function () {
+                var filterValue = $(this).attr('data-filter');
+                if (filterValue === '*') {
+                    $('.repuestos-item').show();
+                } else {
+                    $('.repuestos-item').hide();
+                    $(filterValue).show();
+                }
+                $('#repuestos-flters li').removeClass('filter-active');
+                $(this).addClass('filter-active');
+            });
+        
+
+    </script>
+    
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+
+
