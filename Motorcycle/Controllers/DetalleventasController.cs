@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Motorcycle.Models;
+using YourNamespace.ViewModels;
 
 namespace Motorcycle.Controllers
 {
@@ -189,14 +190,33 @@ namespace Motorcycle.Controllers
             {
                 _context.Detalleventas.Remove(detalleventa);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool DetalleventaExists(int id)
         {
-          return (_context.Detalleventas?.Any(e => e.IdDetalleVentas == id)).GetValueOrDefault();
+            return (_context.Detalleventas?.Any(e => e.IdDetalleVentas == id)).GetValueOrDefault();
+        }
+
+        public async Task<IActionResult> ConfirmarVenta(VentaViewModel venta)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (var item in venta.DetalleVentas)
+                {
+                    var inventario = _context.Inventarios.SingleOrDefault(i => i.IdProducto == item.IdProducto);
+                    if (inventario != null)
+                    {
+                        inventario.CantidadInventario -= item.CantidaDetalleVentas;
+                        _context.Update(inventario);
+                    }
+                }
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(venta);
         }
     }
 }
