@@ -10,6 +10,10 @@ namespace YourNamespace.ViewModels
         public List<DetalleVentaViewModel> DetalleVentas { get; set; }
         public IEnumerable<object> Detalleventa { get; internal set; }
     }
-
+    public class DetalleVentaViewModel
+    {
+        public int IdProducto { get; set; }
+        public int CantidaDetalleVentas { get; set; }
+    }
 }
 
