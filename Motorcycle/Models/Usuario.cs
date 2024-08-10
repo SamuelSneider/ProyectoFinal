@@ -24,6 +24,7 @@ namespace Motorcycle.Models
         public string EstadoUsuario { get; set; } = null!;
         public int IdRol { get; set; }
 
+
         public virtual Rol IdRolNavigation { get; set; } = null!;
         public virtual ICollection<Citum> Cita { get; set; }
         public virtual ICollection<Correousuario> Correousuarios { get; set; }

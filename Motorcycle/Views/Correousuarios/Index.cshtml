@@ -18,15 +18,11 @@
                     </button>
                     
                 </div>
-                <div>
-
-                    <button id="sendEmailButton" class="btn btn-primarys btn-sm" onclick="location.href='@Url.Action("CorreoViewModel", "Correousuarios")'">
-                        <i class="fa fa-pencil"></i>CorreoViewModel
-                    </button>
-
-
+                <div class="d-flex align-items-center mb-3" style="margin-left: 10px;">
+                    <a asp-controller="Correousuarios" asp-action="SendEmail" class="btn btn-primary">Send Email</a>
 
                 </div>
+
             </div>
         </div>
 
@@ -170,16 +166,6 @@
     <script>
         $(document).ready(function () {
 
-            // Checkbox para seleccionar todos
-            var selectAllCheckbox = document.getElementById('select-all');
-            var individualCheckboxes = document.querySelectorAll('.select-checkbox');
-
-            selectAllCheckbox.addEventListener('change', function () {
-                individualCheckboxes.forEach(function (checkbox) {
-                    checkbox.checked = selectAllCheckbox.checked;
-                });
-            });
-
             document.getElementById('sendEmailButton').addEventListener('click', function (event) {
                 event.preventDefault();
 
@@ -195,10 +181,11 @@
                     return;
                 }
 
-                // Serializar los correos seleccionados y redirigir a la acción RedactarCorreo
-                var queryString = new URLSearchParams({ correosSeleccionados: selectedEmails }).toString();
-                window.location.href = '@Url.Action("CorreoViewModel", "Correousuarios")?' + queryString;
+                // Serializar los correos seleccionados y redirigir a la acción SendEmail
+                var queryString = new URLSearchParams({ correosSeleccionados: selectedEmails.join(',') }).toString();
+                window.location.href = '@Url.Action("SendEmail", "Correousuarios")?' + queryString;
             });
+
             
 
             $('#createModal').on('show.bs.modal', function () {

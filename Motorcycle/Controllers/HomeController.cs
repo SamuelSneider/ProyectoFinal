@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Motorcycle.Models;
+using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
 namespace Motorcycle.Controllers
@@ -12,11 +13,12 @@ namespace Motorcycle.Controllers
         {
             _logger = logger;
         }
-
         public IActionResult Index()
         {
             return View();
         }
+
+
 
         public IActionResult Privacy()
         {

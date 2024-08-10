@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -17,15 +16,14 @@ namespace Motorcycle.Controllers
     public class CorreousuariosController : Controller
     {
         private readonly MotorcycleContext _context;
-        private const int PageSize = 10; // Tamaño de página
-        private readonly IEmailSender _emailSender;
+        private const int PageSize = 10;
+        private readonly EmailSender _emailSender;
 
-        public CorreousuariosController(MotorcycleContext context, IEmailSender emailSender)
+
+        public CorreousuariosController(MotorcycleContext context, EmailSender emailSender)
         {
             _context = context;
             _emailSender = emailSender;
-
-
         }
 
         // GET: Correousuarios
@@ -196,69 +194,36 @@ namespace Motorcycle.Controllers
         {
             return (_context.Correousuarios?.Any(e => e.IdCorreoUsuario == id)).GetValueOrDefault();
         }
+
         [HttpGet]
-        public IActionResult CorreoViewModel()
+        public IActionResult SendEmail()
         {
-            return View(new CorreoViewModel());
+            return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> EnviarCorreo(CorreoViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendEmail(string recipientEmail, string subject, string body)
         {
-            if (ModelState.IsValid)
+            if (string.IsNullOrEmpty(recipientEmail) || string.IsNullOrEmpty(subject) || string.IsNullOrEmpty(body))
             {
-                // Asegurarse de que los campos no sean nulos o vacíos
-                if (!string.IsNullOrWhiteSpace(model.Para) &&
-                    !string.IsNullOrWhiteSpace(model.Asunto) &&
-                    !string.IsNullOrWhiteSpace(model.Mensaje))
-                {
-                    string? attachmentPath = null;
-
-                    if (model.Fichero != null && model.Fichero.Length > 0)
-                    {
-                        var fileName = Path.GetFileName(model.Fichero.FileName);
-                        var tempFilePath = Path.Combine(Path.GetTempPath(), fileName);
-
-                        using (var stream = new FileStream(tempFilePath, FileMode.Create))
-                        {
-                            await model.Fichero.CopyToAsync(stream);
-                        }
-
-                        attachmentPath = tempFilePath;
-                    }
-
-                    try
-                    {
-                        await _emailSender.SendEmailAsync(
-                            model.Para ?? throw new ArgumentNullException(nameof(model.Para)),
-                            model.Asunto ?? throw new ArgumentNullException(nameof(model.Asunto)),
-                            model.Mensaje ?? throw new ArgumentNullException(nameof(model.Mensaje)),
-                            attachmentPath
-                        );
-
-                        ViewBag.Message = "Correo enviado exitosamente.";
-
-                        if (attachmentPath != null)
-                        {
-                            System.IO.File.Delete(attachmentPath);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        ViewBag.Message = $"Error al enviar el correo: {ex.Message}";
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Todos los campos son obligatorios.");
-                }
-
-                return View("CorreoViewModel", new CorreoViewModel());
+                return BadRequest("Todos los campos son obligatorios.");
             }
 
-            return View("CorreoViewModel", model);
+            try
+            {
+                await _emailSender.SendEmailAsync(recipientEmail, subject, body);
+                return Ok("Correo enviado correctamente.");
+            }
+            catch (Exception ex)
+            {
+                // Manejar otros errores
+                Console.WriteLine($"Error al enviar correo: {ex.Message}");
+                return StatusCode(500, $"Error al enviar el correo: {ex.Message}");
+            }
+
+
         }
-
-
     }
-}
+}               
+    

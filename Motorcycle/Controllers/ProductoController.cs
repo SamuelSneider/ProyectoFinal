@@ -83,11 +83,12 @@ namespace Motorcycle.Controllers
         }
 
         // POST: Producto/Create
+        // POST: Producto/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductoViewModel viewModel)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var producto = new Producto
                 {
@@ -111,9 +112,11 @@ namespace Motorcycle.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["IdUsuario"] = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario", viewModel.IdUsuario);
             return View(viewModel);
         }
+
 
         // GET: Producto/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -153,11 +156,16 @@ namespace Motorcycle.Controllers
                 return NotFound();
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
                     var producto = await _context.Productos.FindAsync(id);
+                    if (producto == null)
+                    {
+                        return NotFound();
+                    }
+
                     producto.CodigoProducto = viewModel.CodigoProducto;
                     producto.NombreProducto = viewModel.NombreProducto;
                     producto.DescripcionProducto = viewModel.DescripcionProducto;
