@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Motorcycle.Models;
+using Motorcycle.ViewModel;
 
 namespace Motorcycle.Controllers
 {
@@ -13,7 +14,7 @@ namespace Motorcycle.Controllers
     {
         private readonly MotorcycleContext _context;
         private const int PageSize = 10; // Tamaño de página para la paginación
-
+        static List<ProductoCarrito> productosCarrito = new List<ProductoCarrito>() { };
         public OrdenventaController(MotorcycleContext context)
         {
             _context = context;
@@ -194,14 +195,61 @@ namespace Motorcycle.Controllers
             {
                 _context.Ordenventa.Remove(ordenventum);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool OrdenventumExists(int id)
         {
-          return (_context.Ordenventa?.Any(e => e.IdVenta == id)).GetValueOrDefault();
+            return (_context.Ordenventa?.Any(e => e.IdVenta == id)).GetValueOrDefault();
+        }
+
+      
+        public async Task<IActionResult> RegistrarVenta()
+        {
+            ViewData["IdProducto"] = new SelectList(_context.Productos, "IdProducto", "NombreProducto");
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NombreCliente");
+            productosCarrito = new List<ProductoCarrito>();
+            return View(new RegistrarVentaViewModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegistrarVenta(RegistrarVentaViewModel venta)
+        {
+            ViewData["IdProducto"] = new SelectList(_context.Productos, "IdProducto", "NombreProducto");
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NombreCliente");
+            var productos = _context.Productos.Where(x => x.IdProducto == venta.IdProducto).FirstOrDefault();
+            productosCarrito.Add(new ProductoCarrito() { IdCliente = venta.IdCliente,IdProducto = venta.IdProducto,NombreProducto = productos.NombreProducto, Cantidad = venta.Cantidad,Valor=productos.ValorUnitarioProducto});
+            venta.Productos = productosCarrito;
+            return View(venta);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AgregarOrdenVenta()
+        {
+            var ordenVenta = new Ordenventum()
+            {
+                IdEstadoVenta = 1,
+                IdCliente = productosCarrito.FirstOrDefault().IdCliente,
+                IdUsuario = 1,
+                FechaOrdenVenta = DateTime.Now,
+                ValorTotalVenta = 0
+            };
+
+            _context.Ordenventa.Add(ordenVenta);
+            await _context.SaveChangesAsync();
+            var detalleVentas = productosCarrito.Select(x => new Detalleventa()
+            {
+                IdVenta = ordenVenta.IdVenta,
+                IdProducto = x.IdProducto,
+                CantidaDetalleVentas = x.Cantidad,
+                ValorUnitarioDetalleVentas = x.Valor,
+                ValorTotalDetalleVentas = 0
+            });
+            _context.Detalleventas.AddRange(detalleVentas);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

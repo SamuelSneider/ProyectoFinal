@@ -7,15 +7,15 @@
 <form asp-action="SendEmail" method="post">
     <div class="form-group">
         <label for="recipientEmail">Email del destinatario:</label>
-        <input type="email" class="form-control" id="recipientEmail" name="recipientEmail" required>
+        <input type="text" class="form-control" id="recipientEmail" name="recipientEmail" value="@ViewBag.RecipientEmails" required>
     </div>
     <div class="form-group">
         <label for="subject">Asunto:</label>
         <input type="text" class="form-control" id="subject" name="subject" required>
     </div>
     <div class="form-group">
-        <label for="body">Cuerpo del correo:</label>
-        <textarea class="form-control" id="body" name="body" rows="5" required></textarea>
+        <label for="body">Cuerpo del mensaje:</label>
+        <textarea class="form-control" id="body" name="body" rows="4" required></textarea>
     </div>
-    <button type="submit" class="btn btn-primary">Enviar Correo</button>
+    <button type="submit" class="btn btn-primary">Enviar</button>
 </form>

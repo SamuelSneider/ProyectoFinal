@@ -19,8 +19,7 @@ namespace Motorcycle.Controllers
         private const int PageSize = 10;
         private readonly EmailSender _emailSender;
 
-
-        public CorreousuariosController(MotorcycleContext context, EmailSender emailSender)
+        public CorreousuariosController(MotorcycleContext context, EmailSender emailSender )
         {
             _context = context;
             _emailSender = emailSender;
@@ -196,8 +195,9 @@ namespace Motorcycle.Controllers
         }
 
         [HttpGet]
-        public IActionResult SendEmail()
+        public IActionResult SendEmail(string correosSeleccionados)
         {
+            ViewBag.RecipientEmails = correosSeleccionados; 
             return View();
         }
 
@@ -210,19 +210,49 @@ namespace Motorcycle.Controllers
                 return BadRequest("Todos los campos son obligatorios.");
             }
 
+            // Separar las direcciones de correo y validarlas
+            var emails = recipientEmail.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                        .Select(email => email.Trim())
+                                        .ToList();
+
+            foreach (var email in emails)
+            {
+                if (!IsValidEmail(email))
+                {
+                    return BadRequest($"La dirección de correo '{email}' no es válida.");
+                }
+            }
+
             try
             {
-                await _emailSender.SendEmailAsync(recipientEmail, subject, body);
-                return Ok("Correo enviado correctamente.");
+                // Enviar el correo a cada dirección
+                foreach (var email in emails)
+                {
+                    await _emailSender.SendEmailAsync(email, subject, body);
+                }
+                return Ok("Correos enviados correctamente.");
             }
             catch (Exception ex)
             {
                 // Manejar otros errores
                 Console.WriteLine($"Error al enviar correo: {ex.Message}");
-                return StatusCode(500, $"Error al enviar el correo: {ex.Message}");
+                return StatusCode(500, $"Error al enviar los correos: {ex.Message}");
             }
+        }
 
 
+        // Método para validar correos electrónicos
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }               

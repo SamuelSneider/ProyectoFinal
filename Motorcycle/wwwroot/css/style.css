@@ -102,3 +102,103 @@ a:hover {
 a:focus {
     color: rgba(3, 3, 85, 0.466);
 }
+
+
+/* Variables */
+:root {
+    --font-family: 'Lato', sans-serif;
+    --background-color: rgba(235, 235, 205, 0.9);
+    --primary-color: #8ed851; /* Color de fondo para los botones */
+    --primary-hover-color: #76c043; /* Color de hover para el botón primario */
+    --text-color: #666;
+    --link-color: rgba(7, 7, 248, 0.562);
+    --link-hover-color: rgba(11, 11, 190, 0.562);
+    --link-focus-color: rgba(3, 3, 85, 0.466);
+    --form-background: rgba(255, 255, 255, 0.8); /* Color de fondo para el formulario */
+    --button-text-color: #2c3e50; /* Color del texto de los botones */
+    --border-radius: 20px; /* Radio de borde para botones más redondeados */
+}
+
+/* Global Styles */
+* {
+    font-family: var(--font-family);
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url('../dist/img/login.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    color: #fff; /* Cambiar el color del texto para mejorar la legibilidad sobre la imagen */
+}
+
+/* Forms and Containers */
+#register, form {
+    background-color: var(--form-background);
+    border-radius: var(--border-radius); /* Aplicar borde redondeado */
+    margin: 20px auto; /* Centrar y reducir margen para una mejor alineación en pantallas pequeñas */
+    padding: 20px;
+    max-width: 400px; /* Reducir el ancho máximo del formulario */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Agregar sombra para que el formulario sobresalga */
+}
+
+/* Typography */
+h1 {
+    text-align: center;
+    font-size: 2.5rem; /* Aumentar el tamaño para mayor impacto */
+    margin-bottom: 20px;
+    color: #2c3e50; /* Cambiar el color del texto */
+}
+
+p {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #2c3e50; /* Cambiar el color del texto */
+    margin: 10px 0;
+}
+
+/* Links */
+a {
+    color: #2c3e50; /* Cambiar el color del texto */
+    cursor: pointer;
+    font-size: 1.1rem;
+    text-decoration: none;
+}
+
+    a:hover {
+        color: var(--link-hover-color);
+    }
+
+    a:focus {
+        color: var(--link-focus-color);
+    }
+
+/* Form Elements */
+input {
+    padding: 15px;
+    margin: 10px 0;
+    width: calc(100% - 22px);
+    color: var(--text-color);
+    border-radius: var(--border-radius); /* Aplicar borde redondeado */
+    border: 1px solid #ccc;
+}
+
+button[type="submit"] {
+    padding: 10px 20px; /* Ajustar el padding para un tamaño más adecuado */
+    margin: 10px 0; /* Ajustar el margen para separar el botón del contenido */
+    color: var(--button-text-color); /* Cambiar el color del texto de los botones */
+    background-color: var(--primary-color);
+    border: none; /* Quitar el borde del botón */
+    border-radius: var(--border-radius); /* Aplicar borde redondeado */
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: block; /* Asegurar que el botón ocupe todo el ancho disponible */
+    width: 100%; /* Hacer que el botón ocupe todo el ancho del contenedor */
+}
+
+    button[type="submit"]:hover {
+        background-color: var(--primary-hover-color); /* Color de hover para el botón primario */
+    }

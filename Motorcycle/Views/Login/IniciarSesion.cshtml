@@ -3,15 +3,13 @@
     Layout = null;
 }
 
+<!DOCTYPE html>
 <html lang="es">
-@{
-}
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login y Registro con HTML5 y CSS3</title>
+    <title>Inicio de Sesión</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
     <!-- Estilos CSS -->
@@ -19,47 +17,36 @@
     <!-- Favicon -->
     <link rel="shortcut icon" href="/imagenes/favicon.png" type="image/x-icon">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
-
 </head>
 <body>
     <main>
         <article>
             <section>
                 <form asp-action="IniciarSesion" method="post">
-                    <h1>Inicio de Sesion</h1>
-                    
+                    <h1>Iniciar Sesión</h1>
+
                     <div class="form-group">
-                        <label for="correo">Correo electrónico</label>
                         <input type="email" name="correo" id="correo" class="form-control" placeholder="Correo electrónico" required />
                     </div>
 
                     <div class="form-group">
-                        <label for="clave">Contraseña</label>
                         <input type="password" name="clave" id="clave" class="form-control" placeholder="Contraseña" required />
                     </div>
-                    <div class="form-group">
-                        <label for="tipoUsuario">Tipo de Usuario</label>
-                        <select name="tipoUsuario" id="tipoUsuario" class="form-control">
-                            <option value="Usuario">Usuario</option>
-                            <option value="Cliente">Cliente</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primarys">Iniciar Sesión</button>
-                    <button type="reset">Limpiar</button>
 
+                    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+
+                    <p>Aún no tienes cuenta?</p>
+                    <p>
+                        <a href="register.html">Regístrate</a>
+                    </p>
                 </form>
 
                 @if (ViewData["Mensaje"] != null)
                 {
                     <div class="alert alert-danger mt-3">@ViewData["Mensaje"]</div>
                 }
-
             </section>
         </article>
     </main>
-
 </body>
 </html>
-
-
-
