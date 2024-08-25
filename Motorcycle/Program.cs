@@ -6,8 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-IServiceCollection serviceCollection = builder.Services.AddDbContext<MotorcycleContext>(options =>
-       options.UseSqlServer(builder.Configuration.GetConnectionString("conexion")));
+// Configuración de la base de datos
+builder.Services.AddDbContext<MotorcycleContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("conexion2")));
 
 
 var app = builder.Build();
